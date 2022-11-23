@@ -1,0 +1,27 @@
+{
+  "name": "firerip",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Rip courses from Fireship (without an account)?!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lem6ns/firerip.git"
+  },
+  "author": "lem6ns",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lem6ns/firerip/issues"
+  },
+  "homepage": "https://github.com/lem6ns/firerip#readme",
+  "dependencies": {
+    "async": "^3.2.4",
+    "jsdom": "^20.0.3",
+    "multi-progress-bars": "^4.3.1",
+    "node-fetch": "^3.3.0",
+    "yt-dlp-wrap": "^2.3.11"
+  }
+}
