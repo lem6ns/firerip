@@ -8,6 +8,9 @@
  This repository is for educational purposes.
 
  Check out [Freeship](https://greasyfork.org/en/scripts/455330-freeship).
+ 
+# Demo
+https://user-images.githubusercontent.com/62519659/203888483-3c63ea5f-1c90-454b-82b0-9fe60dbca8a9.mp4
 
 # Requirements
  - node.js
