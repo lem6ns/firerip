@@ -27,13 +27,14 @@ async function downloadChapter(chapter, dest, cb) {
         });
     };
     if (!vimeoId && !youtubeId) return;
+    const src = (await fetch(`https://vimeo.com/api/oembed.json?url=https%3A%2F%2Fvimeo.com%2F${vimeoId}&id=${vimeoId}`).then(r => r.json())).html.split("src=\"")[1].split("\"")[0];
 
     return new Promise((resolve, reject) => {
         ytDlpWrap
             .exec([
                 "--referer",
                 "https://fireship.io",
-                `https://player.vimeo.com/video/${vimeoId}`,
+                src,
                 "-o",
                 dest
             ])
