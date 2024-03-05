@@ -9,8 +9,8 @@ async function downloadChapter(chapter, dest, cb) {
     const html = await fetch(chapter).then(r => r.text());
     const { document } = new JSDOM(html).window;
 
-    const vimeoId = document.querySelector("global-data").getAttribute("vimeo");
-    const youtubeId = document.querySelector("global-data").getAttribute("youtube");
+    const vimeoId = atob(document.querySelector("global-data").getAttribute("vimeo"));
+    const youtubeId = atob(document.querySelector("global-data").getAttribute("youtube"));
     if (!vimeoId && youtubeId) {
         return new Promise((resolve, reject) => {
             ytDlpWrap
