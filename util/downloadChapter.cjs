@@ -9,9 +9,13 @@ async function downloadChapter(chapter, dest, cb) {
     const html = await fetch(chapter).then(r => r.text());
     const { document } = new JSDOM(html).window;
 
-    const vimeoId = Number(atob(document.querySelector("global-data").getAttribute("vimeo"))) - Number(document.querySelector("head").getAttribute("data-build"));
+    const vimeoId = Number(atob(document.querySelector("global-data").getAttribute("vimeo")));
     const youtubeId = atob(document.querySelector("global-data").getAttribute("youtube"));
-    if (!vimeoId && youtubeId) {
+    
+    if (!vimeoId && !youtubeId) return;
+
+    // Youtube video
+    if (youtubeId) {
         return new Promise((resolve, reject) => {
             ytDlpWrap
                 .exec([
@@ -26,7 +30,8 @@ async function downloadChapter(chapter, dest, cb) {
                 .on("close", ()=>resolve())
         });
     };
-    if (!vimeoId && !youtubeId) return;
+
+    // Vimeo video
     const src = (await fetch(`https://vimeo.com/api/oembed.json?url=https%3A%2F%2Fvimeo.com%2F${vimeoId}&id=${vimeoId}`).then(r => r.json())).html.split("src=\"")[1].split("\"")[0];
 
     return new Promise((resolve, reject) => {
