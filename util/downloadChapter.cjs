@@ -8,10 +8,34 @@ async function downloadChapter(chapter, dest, cb) {
     if (existsSync(dest)) return; 
     const html = await fetch(chapter).then(r => r.text());
     const { document } = new JSDOM(html).window;
-
-    const vimeoId = Number(atob(document.querySelector("global-data").getAttribute("vimeo")));
-    const youtubeId = atob(document.querySelector("global-data").getAttribute("youtube"));
+    document.querySelectorAll("[free=\"\"]").forEach(el => el.setAttribute("free", true))
+    document.querySelector("video-player").setAttribute("free", true)
+    // oldmethod_vimeo = atob(document.querySelector("global-data").getAttribute("vimeo")
+    function decodeAndProcess(encodedString) {
+        try {
+            const decoded = atob(encodedString);
+            if (decoded.includes('=')) {
+                const parts = decoded.split('=');
+                const lastPart = parts[parts.length - 1].trim();
+                const finalDecoded = atob(lastPart);
     
+                return {
+                    Decoded: Number(finalDecoded.split('\u0088')[0])
+                };
+            }
+            return {
+                Decoded: Number(atob(decoded).split('\u0088')[0].split('/').at(-1)),
+            };
+        } catch (error) {
+            return {
+                error: "Invalid encoded input",
+                details: error.message
+            };
+        }
+    }
+    const vimeoId = decodeAndProcess(document.querySelector("global-data").getAttribute("vimeo")).Decoded;
+    const youtubeId = atob(document.querySelector("global-data").getAttribute("youtube"));
+    console.log(vimeoId)
     if (!vimeoId && !youtubeId) return;
 
     // Youtube video
