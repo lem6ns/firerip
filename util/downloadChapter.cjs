@@ -15,24 +15,27 @@ async function downloadChapter(chapter, dest, cb) {
         try {
             const decoded = atob(encodedString);
             if (decoded.includes('=')) {
-                const parts = decoded.split('=');
-                const lastPart = parts[parts.length - 1].trim();
-                const finalDecoded = atob(lastPart);
-    
+              // debugger
+              const parts = decoded.split('=').map(part => part.trim());
+               for (let part of parts) {
+                  let decodedPart = atob(part);
+                  if (decodedPart.includes("courses")) {
+                      return {
+                          Decoded: Number(decodedPart.split('/').at(-1))
+                      };
+                  }
+              }}
+            let vid = atob(decoded).split('\u0088')[0].split('/').at(-1);
+            return {
+                Decoded: Number(vid)
+            };
+            } catch (error) {
                 return {
-                    Decoded: Number(finalDecoded.split('\u0088')[0])
+                    error: "Invalid encoded input",
+                    details: error.message
                 };
             }
-            return {
-                Decoded: Number(atob(decoded).split('\u0088')[0].split('/').at(-1)),
-            };
-        } catch (error) {
-            return {
-                error: "Invalid encoded input",
-                details: error.message
-            };
         }
-    }
     const vimeoId = decodeAndProcess(document.querySelector("global-data").getAttribute("vimeo")).Decoded;
     const youtubeId = atob(document.querySelector("global-data").getAttribute("youtube"));
     console.log(vimeoId)
